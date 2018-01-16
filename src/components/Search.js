@@ -15,13 +15,23 @@ class Search extends Component{
     }
     
     
-    // insert search method
+   search(event){
+       event.preventDefault()
+
+       axios.get(`./api/${this.state.searchType}?=${this.state.searchTerm}`).then(results=>{
+            if(this.state.searchType === "blogs"){
+                this.setState({blogResults:results.data, userResults:[]})
+            }
+            else this.setState({userResults:results.data, blogResults:[]})
+       })
+       
+   }
     
     
     render(){
-        // map over the blogResults and userResults here, replace the empty arrays.
-        const blogResults = []
-        const userResults = []
+       
+        const blogResults = this.state.blogResults.map((c,i)=> <BlogTile key={i} blog={c}/>)
+        const userResults = this.state.userResults.map((c,i)=> <UserTile key={i} user={c}/>)
 
         return(
             <div className='content search-view' >
